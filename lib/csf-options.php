@@ -12,7 +12,6 @@ Class Zsb_Options {
 
     $options      = array(); // remove old options
 
-    // Options for ZSB
     /**
      * Referal ID - Text Field
      * Designer ID (Slug) - Text Field
@@ -162,9 +161,82 @@ Class Zsb_Options {
             'placeholder'   => 'http://www.example.com/'
           ),
           'dependency' => array( 'zsb_products_alt_link', '==', 'true' )
-        )
+        ),
+
+        array(
+          'id'      => 'zsb_products_img_bg',
+          'type'    => 'switcher',
+          'title'   => 'Change Product Image Background Color',
+          'desc'    => 'Change the background color of the product images returned by Zazzle.',
+          'default' => false,
+        ),
+
+        array(
+          'id'      => 'zsb_products_img_bg_content',
+          'type'    => 'color_picker',
+          'title'   => 'Product Image Background Color',
+          'desc'    => 'What color would you like for the background of the product image?<br/>Defaults to white.',
+          'dependency' => array( 'zsb_products_img_bg', '==', 'true' )
+        ),
+
       ),
     );
+
+    /* Keyword Filter - Text Field
+    * Department Filter - Select Field
+    * Rating Filter - Select Field
+    * -------------------------------
+    * Show Product Title - Switcher Field
+    * Show By Line (Designer) - Switcher Field
+    * Show Description - Switcher Field
+    * Show Price - Switcher Field
+    * -------------------------------
+    * Template Options - More Later
+    * -------------------------------
+    **/
+
+   $options[]    = array(
+     'name'      => 'zsb_section_filter',
+     'title'     => 'Filter Settings',
+     'icon'      => 'fa fa-filter',
+     'fields'    => array(
+       array(
+         'type'    => 'subheading',
+         'content' => 'Filter Options',
+       ),
+
+       array(
+         'id'      => 'zsb_filter_keywords',
+         'type'    => 'text',
+         'title'   => 'Keyword Filter',
+         'desc'    => 'Keywords to filter returned products by.<br />Separate multiple keywords with a comma (,).',
+       ),
+
+       array(
+         'type'    => 'notice',
+         'class'   => 'info',
+         'content' => '<strong>Note:</strong> The department list is updated by Zazzle regularly and there is no way to automatically update it. Please email admin [at] return-true [dot] com if there is a department missing from the list.'
+       ),
+
+       array(
+         'id'      => 'zsb_filter_department',
+         'type'    => 'select',
+         'title'   => 'Department Filter',
+         'desc'    => 'Returns only products from a specific department.',
+         'help'    => 'Departments are essentially product types.',
+         'options' => array(
+           'item1'    => 'item 1'
+         )
+       ),
+
+       /*array(
+         'id'     => 'zsb_filter_rating',
+         'type'   => 'select',
+         'title'  => 'Rating Filter',
+         'desc'   => 'Returns only '
+       ),*/
+     ),
+   );
 
     return $options;
 
