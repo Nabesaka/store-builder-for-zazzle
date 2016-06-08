@@ -1,6 +1,6 @@
-<?php
+<?php if ( ! defined( 'ABSPATH' ) ) { die; } // Cannot access pages directly.
 
-Class Zsb_Options {
+Class Zsb_Csf_Options {
 
   public function __construct()
   {
@@ -25,7 +25,7 @@ Class Zsb_Options {
         ),
 
         array(
-          'id'      => 'zsb_designer_referal_id',
+          'id'      => 'zsb_designer_referral_id',
           'type'    => 'text',
           'title'   => 'Referral ID',
           'desc'    => 'This will enable you to earn referral on any purchases made after a visitor clicks through to Zazzle.',
@@ -192,7 +192,7 @@ Class Zsb_Options {
        ),
 
        array(
-         'id'      => 'zsb_filter_product_link',
+         'id'      => 'zsb_filter_product_line',
          'type'    => 'text',
          'title'   => 'Product Line Filter',
          'desc'    => 'A product line is the same as the categories you can make in your store.<br />Enter the CG number for the category you wish to filter by. Please view the documentation for more.',
@@ -263,4 +263,4 @@ Class Zsb_Options {
 
 }
 
-new Zsb_Options;
+new Zsb_Csf_Options;

@@ -1,6 +1,6 @@
-<?php
+<?php if ( ! defined( 'ABSPATH' ) ) { die; } // Cannot access pages directly.
 
-Class Zsb_Settings {
+Class Zsb_Csf_Settings {
 
   public function __construct()
   {
@@ -27,4 +27,4 @@ Class Zsb_Settings {
 
 }
 
-new Zsb_Settings;
+new Zsb_Csf_Settings;
