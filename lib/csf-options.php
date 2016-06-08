@@ -12,30 +12,7 @@ Class Zsb_Options {
 
     $options      = array(); // remove old options
 
-    /**
-     * Referal ID - Text Field
-     * Designer ID (Slug) - Text Field
-     * -------------------------------
-     * Products Per Page - Number Field
-     * Sorting (Created / Popularity) - Select Field
-     * Product Image Size - Select Field
-     * Link to Product - Switcher Field
-     * Alternative Link - Text Field
-     * Change Image BG Color - Switcher Field
-     * Image BG Color - Text Field
-     * -------------------------------
-     * Keyword Filter - Text Field
-     * Department Filter - Select Field
-     * Rating Filter - Select Field
-     * -------------------------------
-     * Show Product Title - Switcher Field
-     * Show By Line (Designer) - Switcher Field
-     * Show Description - Switcher Field
-     * Show Price - Switcher Field
-     * -------------------------------
-     * Template Options - More Later
-     * -------------------------------
-     **/
+    // DESIGNER SETTINGS
 
     $options[]    = array(
       'name'      => 'zsb_section_designer',
@@ -64,6 +41,8 @@ Class Zsb_Options {
         ),
       ),
     );
+
+    // PRODUCT SETTINGS
 
     $options[]    = array(
       'name'      => 'zsb_section_products',
@@ -106,12 +85,6 @@ Class Zsb_Options {
             'popularity|30'   => 'Popularity (This Month)',
           ),
           'default_option' => 'Select Sorting',
-        ),
-
-        array(
-          'type'    => 'notice',
-          'class'   => 'danger',
-          'content' => '<strong>Note:</strong> Zazzle do not allow the use of Popularity Sorting and selecting a Product Image Size. If you select popularity sorting Zazzle will automatically return Product Images sized at 152px X 152px regardless of the Product Image Size setting below.',
         ),
 
         array(
@@ -182,18 +155,7 @@ Class Zsb_Options {
       ),
     );
 
-    /* Keyword Filter - Text Field
-    * Department Filter - Select Field
-    * Rating Filter - Select Field
-    * -------------------------------
-    * Show Product Title - Switcher Field
-    * Show By Line (Designer) - Switcher Field
-    * Show Description - Switcher Field
-    * Show Price - Switcher Field
-    * -------------------------------
-    * Template Options - More Later
-    * -------------------------------
-    **/
+   // FILTER SETTINGS
 
    $options[]    = array(
      'name'      => 'zsb_section_filter',
@@ -215,12 +177,12 @@ Class Zsb_Options {
        array(
          'type'    => 'notice',
          'class'   => 'info',
-         'content' => '<strong>Note:</strong> The department list is updated by Zazzle regularly and there is no way to automatically update it. Please email admin [at] return-true [dot] com if there is a department missing from the list.'
+         'content' => '<strong>Note:</strong> Zazzle do not provide a consumable list of Department IDs that can be used to populate a list. Instead they have a <a href="http://www.zazzle.co.uk/sell/affiliates/promotionaltools/rss" target="zsb_external">selector on their website</a>. Please use that to find the Department ID you need and paste it in the box below.'
        ),
 
        array(
          'id'      => 'zsb_filter_department',
-         'type'    => 'select',
+         'type'    => 'text',
          'title'   => 'Department Filter',
          'desc'    => 'Returns only products from a specific department.',
          'help'    => 'Departments are essentially product types.',
@@ -229,16 +191,73 @@ Class Zsb_Options {
          )
        ),
 
+       array(
+         'id'      => 'zsb_filter_product_link',
+         'type'    => 'text',
+         'title'   => 'Product Line Filter',
+         'desc'    => 'A product line is the same as the categories you can make in your store.<br />Enter the CG number for the category you wish to filter by. Please view the documentation for more.',
+       ),
+
        /*array(
          'id'     => 'zsb_filter_rating',
          'type'   => 'select',
          'title'  => 'Rating Filter',
-         'desc'   => 'Returns only '
+         'desc'   => 'Returns only items that have the specified maturity rating.',
+         'options'  =>  array(
+            'G'   => 'G',
+         )
        ),*/
      ),
    );
 
-    return $options;
+   // DISPLAY SETTINGS
+
+   $options[]    = array(
+     'name'      => 'zsb_section_display',
+     'title'     => 'Display Settings',
+     'icon'      => 'fa fa-television',
+     'fields'    => array(
+       array(
+         'type'    => 'subheading',
+         'content' => 'Display Options',
+       ),
+
+       array(
+         'id'      => 'zsb_display_title',
+         'type'    => 'switcher',
+         'title'   => 'Display Product Title',
+         'desc'    => 'Should the product title be displayed?',
+         'default' => true
+       ),
+
+       array(
+         'id'      => 'zsb_display_author',
+         'type'    => 'switcher',
+         'title'   => 'Display By Line',
+         'desc'    => 'Should the product author/designer be displayed?',
+         'default' => true
+       ),
+
+       array(
+         'id'      => 'zsb_display_description',
+         'type'    => 'switcher',
+         'title'   => 'Display Product Description',
+         'desc'    => 'Should the product description be displayed?',
+         'default' => true
+       ),
+
+       array(
+         'id'      => 'zsb_display_price',
+         'type'    => 'switcher',
+         'title'   => 'Display Product Price',
+         'desc'    => 'Should the product price be displayed?',
+         'default' => true
+       ),
+     ),
+   );
+
+
+  return $options;
 
   }
 
