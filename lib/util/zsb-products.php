@@ -46,10 +46,10 @@ class Zsb_Products {
 
     public function __construct( $feed )
     {
-        $this->create_products( $feed );
+        $this->createProducts( $feed );
     }
 
-    private function create_products( $feed )
+    private function createProducts( $feed )
     {
         $products = array();
 

@@ -7,12 +7,12 @@ Class Zsb_Error {
      * IF PHP IS NOT A HIGH ENOUGH VERSION
      **/
 
-    public static function incompatible_wp()
+    public static function incompatibleWp()
     {
-        add_action( 'admin_notices', array( 'Zsb_Error', 'create_incompatible_wp_error' ) );
+        add_action( 'admin_notices', array( 'Zsb_Error', 'createIncompatibleWpError' ) );
     }
 
-    public static function create_incompatible_wp_error()
+    public static function createIncompatibleWpError()
     {
         $class = 'notice notice-error';
         $message = __( '<strong>Store Builder:</strong> Your installed WordPress version is too old. Please upgrade if you wish to continue using this plugin. We have automatically disabled the plugin to prevent any errors.', 'store-builder');
@@ -20,12 +20,12 @@ Class Zsb_Error {
         printf('<div class="%1$s"><p>%2$s</p></div>', $class, $message);
     }
 
-    public static function incompatible_php()
+    public static function incompatiblePhp()
     {
-        add_action( 'admin_notices', array( 'Zsb_Error', 'create_incompatible_php_error' ) );
+        add_action( 'admin_notices', array( 'Zsb_Error', 'createIncompatiblePhpError' ) );
     }
 
-    public static function create_incompatible_php_error()
+    public static function createIncompatiblePhpError()
     {
         $class = 'notice notice-error';
         $message = __( '<strong>Store Builder:</strong> Version 5.3 of PHP is required for this plugin to work. Please ask your host to upgrade if you wish to continue using it. We have automatically disabled the plugin to prevent any errors.', 'store-builder');
@@ -33,7 +33,7 @@ Class Zsb_Error {
         printf('<div class="%1$s"><p>%2$s</p></div>', $class, $message);
     }
 
-     public static function public_error($class, $message)
+     public static function publicError($class, $message)
      {
          $message = __( '<strong>Store Builder:</strong> ' . $message, 'store-builder');
 

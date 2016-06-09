@@ -10,11 +10,17 @@
  * License: GPLv2 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.txt
  * Text Domain: store-builder
+ *
+ * IMPORTANT: Composer is used to manage dependencies but they are included in VCS
  **/
+
+// Require Composer Autoloader
+require_once plugin_dir_path( __FILE__ ) . 'vendor/autoload.php';
 
 // Require CodeStar Framework
 require_once plugin_dir_path( __FILE__ ) . 'lib/csf/cs-framework.php';
 
+// Not using PSR-4 autoloading for these classes to keep things simple. May update it in the future.
 // Require CodeStar Settings
 require_once plugin_dir_path( __FILE__ ) . 'lib/csf-settings.php';
 // Require CodeStar Options
@@ -28,11 +34,12 @@ require_once plugin_dir_path( __FILE__ ) . '/lib/csf-shortcode.php';
 
 // Include ZSB Error Class to show error messages
 require_once plugin_dir_path( __FILE__ ) . '/lib/util/zsb-error.php';
-
-// Include ZSB Parser Class to parse Feed into a product Class
+// Include ZSB Product Class
 require_once plugin_dir_path( __FILE__ ) . '/lib/util/zsb-product.php';
-
+// Include ZSB Products Class
 require_once plugin_dir_path( __FILE__ ) . '/lib/util/zsb-products.php';
+// Include ZSB Template Parser
+require_once plugin_dir_path( __FILE__ ) . '/lib/util/zsb-templates.php';
 
 
 // Main ZSB Class
@@ -47,14 +54,14 @@ Class Zsb_Main {
   public function __construct()
   {
     // Do some compatibility checking
-    add_action( 'admin_init', array( $this, 'check_compat' ) );
+    add_action( 'admin_init', array( $this, 'checkCompat' ) );
 
     // Get the feed from Zazzle
-    add_shortcode( 'store-builder', array( $this, 'build_shortcode' ) );
+    add_shortcode( 'store-builder', array( $this, 'buildShortcode' ) );
 
   }
 
-  public function check_compat()
+  public function checkCompat()
   {
 
     // Check version of WordPress
@@ -71,7 +78,7 @@ Class Zsb_Main {
 
   }
 
-  public function build_shortcode( $atts )
+  public function buildShortcode( $atts )
   {
 
     $atts = shortcode_atts(array(
@@ -92,16 +99,16 @@ Class Zsb_Main {
       'show_product_price'    => cs_get_option( 'zsb_display_price' ),
     ), $atts);
 
-    $feed = $this->get_feed( $atts );
+    $feed = $this->getFeed( $atts );
 
     $products = new Zsb_Products( $feed );
 
     if($products->getError())
-      Zsb_Error::public_error('notice notice-error', 'There was a problem converting the Feed data to products. This is normally caused by there being no products returned.');
+      Zsb_Error::publicError('notice notice-error', 'There was a problem converting the Feed data to products. This is normally caused by there being no products returned.');
 
   }
 
-  public function get_feed( $atts )
+  public function getFeed( $atts )
   {
 
     $url = $this->API_URL . $atts['designer_id'] . '/' . $this->API_SUFFIX;
@@ -116,7 +123,7 @@ Class Zsb_Main {
     ));
 
     if( is_wp_error( $feed ) ) {
-      Zsb_Error::public_error('notice notice-error', 'There was an unknown error fetching the feed.');
+      Zsb_Error::publicError('notice notice-error', 'There was an unknown error fetching the feed.');
     }
 
     set_transient( 'zsb_feed_cache', $feed['body'], 3600);

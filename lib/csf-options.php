@@ -4,10 +4,10 @@ Class Zsb_Csf_Options {
 
   public function __construct()
   {
-    add_filter( 'cs_framework_options', array( $this, 'cs_framework_options' ) );
+    add_filter( 'cs_framework_options', array( $this, 'csFrameworkOptions' ) );
   }
 
-  public function cs_framework_options( $options )
+  public function csFrameworkOptions( $options )
   {
 
     $options      = array(); // remove old options
