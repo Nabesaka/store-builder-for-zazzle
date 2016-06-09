@@ -32,6 +32,8 @@ require_once plugin_dir_path( __FILE__ ) . '/lib/util/zsb-error.php';
 // Include ZSB Parser Class to parse Feed into a product Class
 require_once plugin_dir_path( __FILE__ ) . '/lib/util/zsb-product.php';
 
+require_once plugin_dir_path( __FILE__ ) . '/lib/util/zsb-products.php';
+
 
 // Main ZSB Class
 Class Zsb_Main {
@@ -90,18 +92,19 @@ Class Zsb_Main {
       'show_product_price'    => cs_get_option( 'zsb_display_price' ),
     ), $atts);
 
-    $feed = $this->get_feed( $atts['designer_id'] );
+    $feed = $this->get_feed( $atts );
 
-    $products = $this->create_products( $feed );
+    $products = new Zsb_Products( $feed );
 
-    print_r($products);
+    if($products->getError())
+      Zsb_Error::public_error('notice notice-error', 'There was a problem converting the Feed data to products. This is normally caused by there being no products returned.');
 
   }
 
-  public function get_feed( $designer = '' )
+  public function get_feed( $atts )
   {
 
-    $url = $this->API_URL . $designer . '/' . $this->API_SUFFIX;
+    $url = $this->API_URL . $atts['designer_id'] . '/' . $this->API_SUFFIX;
 
     if( $cache = get_transient( 'zsb_feed_cache' ) )
           return $cache;
@@ -119,41 +122,6 @@ Class Zsb_Main {
     set_transient( 'zsb_feed_cache', $feed['body'], 3600);
 
     return $feed['body'];
-
-  }
-
-  public function create_products( $feed )
-  {
-
-    $products = array();
-
-    $xml = new SimpleXMLElement($feed);
-    $xml->registerXPathNamespace('opensearch', 'http://a9.com/-/spec/opensearch/1.1/');
-    $xml->registerXPathNamespace('media', 'http://search.yahoo.com/mrss/');
-
-    foreach($xml->xpath('/rss/channel/item') as $item) {
-
-      $product = new Zsb_Product();
-
-      $product->setTitle($item->title);
-      $product->setDesigner($item->author);
-      $product->setPrice($item->price);
-      $product->setDate($item->pubDate);
-      $product->setLink($item->guid);
-      $product->setDescription($item->xpath('media:description')[0]);
-      $product->setDescriptionHTML($item->description);
-      $product->setImageUrl($item->xpath('media:thumbnail')[0]->attributes()->url);
-      $product->setRating($item->xpath('media:rating')[0]);
-      $product->setKeywords($item->xpath('media:keywords')[0]);
-
-      $products[] = $product;
-
-    }
-
-    if( is_array($products) && !empty($products) )
-      return $products;
-
-    return false;
 
   }
 
