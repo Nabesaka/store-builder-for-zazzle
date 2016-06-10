@@ -81,6 +81,7 @@ Class Zsb_Main {
   public function buildShortcode( $atts )
   {
 
+    // Set default atts & merge overrides
     $atts = shortcode_atts(array(
       'referral_id'           => cs_get_option( 'zsb_designer_referral_id' ),
       'designer_id'           => cs_get_option( 'zsb_designer_designer_id' ),
@@ -99,12 +100,22 @@ Class Zsb_Main {
       'show_product_price'    => cs_get_option( 'zsb_display_price' ),
     ), $atts);
 
+    // Get the feed with the correct options set
     $feed = $this->getFeed( $atts );
 
+    // Convert feed to Products (see zsb-products.php)
     $products = new Zsb_Products( $feed );
 
-    if($products->getError())
-      Zsb_Error::publicError('notice notice-error', 'There was a problem converting the Feed data to products. This is normally caused by there being no products returned.');
+    // If there were no products error
+    if($products->getError()) {
+        Zsb_Error::publicError( 'notice notice-error', 'There was a problem converting the Feed data to products. This is normally caused by there being no products returned.' );
+        return false;
+    }
+
+    // Setup twig template system (template path, caching)
+    $template = new Zsb_Templates( false, false, true );
+
+    return $template->render( 'standard.html.twig', array( 'products' => $products ) );
 
   }
 
@@ -123,7 +134,7 @@ Class Zsb_Main {
     ));
 
     if( is_wp_error( $feed ) ) {
-      Zsb_Error::publicError('notice notice-error', 'There was an unknown error fetching the feed.');
+      Zsb_Error::publicError( 'notice notice-error', 'There was an unknown error fetching the feed.' );
     }
 
     set_transient( 'zsb_feed_cache', $feed['body'], 3600);

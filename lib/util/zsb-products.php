@@ -1,6 +1,6 @@
 <?php if ( ! defined( 'ABSPATH' ) ) { die; } // Cannot access pages directly.
 
-class Zsb_Products {
+class Zsb_Products implements IteratorAggregate {
 
     /**
      * Array of Zsb_Product classes
@@ -47,6 +47,11 @@ class Zsb_Products {
     public function __construct( $feed )
     {
         $this->createProducts( $feed );
+    }
+
+    public function getIterator()
+    {
+        return new ArrayIterator( $this->products );
     }
 
     private function createProducts( $feed )

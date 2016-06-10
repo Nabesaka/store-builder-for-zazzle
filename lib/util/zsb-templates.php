@@ -14,7 +14,7 @@ class Zsb_Templates {
      *
      * @var boolean/string
      */
-    public $cache;
+    private $cache;
 
     /**
      * Twig Instance
@@ -23,12 +23,14 @@ class Zsb_Templates {
      */
     public $twig;
 
-    public function __construct()
+    public function __construct($path = false, $cache = null, $debug = false)
     {
-        // Set template path
-        $this->path = plugin_dir_path( __FILE__ ) . '/templates/';
-        $this->cache = '/templates/cache';
+        // Set template path relative to this file
+        $this->path = ( $path ? $path : plugin_dir_path( __FILE__ ) . '../../templates/' );
+        $this->cache = ( !is_null( $cache ) ? $cache : '/templates/cache' );
+        $this->debug = ( $debug ? $debug : false );
 
+        $this->initTwig();
     }
 
     private function initTwig()
@@ -36,7 +38,13 @@ class Zsb_Templates {
         $loader = new Twig_Loader_Filesystem( $this->path );
         $this->twig = new Twig_Environment($loader, array(
             'cache' => $this->cache,
+            'debug' => $this->debug,
         ));
+    }
+
+    public function render($template, $opts)
+    {
+        $this->twig->render( $template, $opts );
     }
 
 }
