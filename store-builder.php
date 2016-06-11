@@ -68,12 +68,14 @@ Class Zsb_Main {
     if( version_compare( get_bloginfo('version'), '3.0' ) < 0 ) {
       Zsb_Error::incompatible_wp();
       deactivate_plugins( plugin_basename( __FILE__ ) );
+      return false; // End Exec
     }
 
     // Check version of PHP
     if( version_compare( PHP_VERSION, '5.3' ) < 0 ) {
       Zsb_Error::incompatible_php();
       deactivate_plugins( plugin_basename( __FILE__ ) );
+      return false; // End Exec
     }
 
   }
@@ -112,11 +114,11 @@ Class Zsb_Main {
         return false;
     }
 
-    // Setup twig template system (template path, caching)
-    $template = new Zsb_Templates( false, false, true );
+    // Setup twig template system (template path, caching, debug)
+    $template = new Zsb_Templates( plugin_dir_path( __FILE__ ) . 'templates', false, true );
 
-    return $template->render( 'standard.html.twig', array( 'products' => $products ) );
-
+    return $template->twig->render( 'standard.html.twig', array( 'products' => $products ) );
+    
   }
 
   public function getFeed( $atts )

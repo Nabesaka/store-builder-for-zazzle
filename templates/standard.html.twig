@@ -1,7 +1,7 @@
 <div class="zsb_products">
     {% for product in products %}
         <div class="zsb_product">
-            {{ dump(product) }}
+            {{ product.getTitle }}
         </div>
     {% endfor %}
 </div>

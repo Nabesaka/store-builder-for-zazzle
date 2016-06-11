@@ -26,7 +26,7 @@ class Zsb_Templates {
     public function __construct($path = false, $cache = null, $debug = false)
     {
         // Set template path relative to this file
-        $this->path = ( $path ? $path : plugin_dir_path( __FILE__ ) . '../../templates/' );
+        $this->path = $path;
         $this->cache = ( !is_null( $cache ) ? $cache : '/templates/cache' );
         $this->debug = ( $debug ? $debug : false );
 
@@ -40,11 +40,9 @@ class Zsb_Templates {
             'cache' => $this->cache,
             'debug' => $this->debug,
         ));
-    }
 
-    public function render($template, $opts)
-    {
-        $this->twig->render( $template, $opts );
+        if($this->debug)
+            $this->twig->addExtension(new Twig_Extension_Debug());
     }
 
 }
