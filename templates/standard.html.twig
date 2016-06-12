@@ -1,7 +1,14 @@
 <div class="zsb_products">
     {% for product in products %}
         <div class="zsb_product">
-            {{ product.getTitle }}
+            <div class="zsb_image">
+                {% if product.getImageUrl %}
+                    <img src="{{ product.getImageUrl() }}" />
+                {% endif %}
+            </div>
+            <div class="zsb_title">
+                <a href="{{ product.getLink }}">{{ product.getTitle[:45] }}&hellip;</a>
+            </div>
         </div>
     {% endfor %}
 </div>
