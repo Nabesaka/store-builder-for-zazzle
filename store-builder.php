@@ -102,46 +102,88 @@ Class Zsb_Main {
       'show_product_price'    => cs_get_option( 'zsb_display_price' ),
     ), $atts);
 
+    // Split out the attributes used only in the FEED URL
+    $urlAtts = $this->getFeedAtts( $atts );
     // Get the feed with the correct options set
-    $feed = $this->getFeed( $atts );
+    $feed = $this->getFeed( $urlAtts, $atts['designer_id'] );
 
     // Convert feed to Products (see zsb-products.php)
     $products = new Zsb_Products( $feed );
 
     // If there were no products error
     if($products->getError()) {
-        Zsb_Error::publicError( 'notice notice-error', 'There was a problem converting the Feed data to products. This is normally caused by there being no products returned.' );
-        return false;
+      Zsb_Error::publicError( 'notice notice-error', 'There was a problem converting the Feed data to individual products. This is normally caused by there being no products returned.' );
+      return false;
     }
 
     // Setup twig template system (template path, caching, debug)
     $template = new Zsb_Templates( plugin_dir_path( __FILE__ ) . 'templates', false, true );
 
     return $template->twig->render( 'standard.html.twig', array( 'products' => $products ) );
-    
+
   }
 
-  public function getFeed( $atts )
+  public function getFeed( $atts, $designer )
   {
 
-    $url = $this->API_URL . $atts['designer_id'] . '/' . $this->API_SUFFIX;
+    // Create API URL, if designer is empty it will default to all products
+    $url = $this->API_URL . $designer . '/' . $this->API_SUFFIX;
 
-    if( $cache = get_transient( 'zsb_feed_cache' ) )
-          return $cache;
+    // For debugging only - prevents cache from persisting
+    delete_transient( 'zsb_feed_cache' );
+
+    if( get_transient( 'zsb_feed_cache', false ) )
+      return get_transient( 'zsb_feed_cache' );
+
+    // urlencode all items in the atts array
+    array_map( 'urlencode', $atts );
+
+    // Build a query string from them & add to URL
+    $url = esc_url( $url . '?' . build_query( $atts ) );
+
+    var_dump($url);
 
     $feed = wp_remote_get($url, array(
       'timeout' => 20,
       'redirection' => 0,
-      'user-agent' => 'Store Builder Plugin for WordPress (By Paul Robinson/Return True)',
+      'user-agent' => 'Store Builder For Zazzle WordPress Plugin (By Paul Robinson/Return True)',
     ));
 
     if( is_wp_error( $feed ) ) {
       Zsb_Error::publicError( 'notice notice-error', 'There was an unknown error fetching the feed.' );
     }
 
-    set_transient( 'zsb_feed_cache', $feed['body'], 3600);
+    set_transient( 'zsb_feed_cache', $feed['body'], 3600 );
 
     return $feed['body'];
+
+  }
+
+  public function getFeedAtts( $atts )
+  {
+
+    // Split out sorting method
+    $sort = explode( '|', $atts['sort_by'] );
+
+    // If explode resulted in 1 item it is empty or not popularity
+    if( count( $sort ) > 1 ) {
+      $st = $sort[0];
+      $sp = $sort[1];
+    } else {
+      $st = 'date_created';
+      $sp = null;
+    }
+
+    return array(
+      'qs'  => $atts['keyword_filter'],
+      'ps'  => $atts['products_per_page'],
+      'bg'  => $atts['img_bg'],
+      'isz' => $atts['image_size'],
+      'st'  => $st,
+      'sp'  => $sp,
+      'dp'  => $atts['department_filter'],
+      'cg'  => $atts['product_line_filter'],
+    );
 
   }
 

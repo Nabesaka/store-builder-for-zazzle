@@ -177,7 +177,7 @@ Class Zsb_Csf_Options {
        array(
          'type'    => 'notice',
          'class'   => 'info',
-         'content' => '<strong>Note:</strong> Zazzle do not provide a consumable list of Department IDs that can be used to populate a list. Instead they have a <a href="http://www.zazzle.co.uk/sell/affiliates/promotionaltools/rss" target="zsb_external">selector on their website</a>. Please use that to find the Department ID you need and paste it in the box below.'
+         'content' => '<strong>Note:</strong> Zazzle will not provide me with a consumable list of Department IDs that can be used to populate a list. Instead they have a <a href="http://www.zazzle.co.uk/sell/affiliates/promotionaltools/rss" target="zsb_external">selector on their website</a>. Please use that to find the Department ID you need and paste it in the box below.'
        ),
 
        array(
