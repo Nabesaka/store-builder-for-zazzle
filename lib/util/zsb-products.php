@@ -1,5 +1,8 @@
 <?php if ( ! defined( 'ABSPATH' ) ) { die; } // Cannot access pages directly.
 
+// Ignore malformed XML. We'll deal with errors when they appear
+libxml_use_internal_errors(true);
+
 class Zsb_Products implements IteratorAggregate {
 
     /**
@@ -54,9 +57,32 @@ class Zsb_Products implements IteratorAggregate {
         return new ArrayIterator( $this->products );
     }
 
+    public function isValidXml( $feed )
+    {
+        $doc = new DOMDocument( '1.0', 'utf-8' );
+        $doc->loadXML( $feed );
+
+        $errors = libxml_get_errors();
+
+        if( empty( $errors ) ) {
+            return true;
+        }
+
+        if( $errors[0]->level < 3 ) {
+            return false;
+        }
+
+        return false;
+    }
+
     private function createProducts( $feed )
     {
         $products = array();
+
+        if( !$this->isValidXml( $feed ) ) {
+            $this->error = true;
+            return false;
+        }
 
         $xml = new SimpleXMLElement($feed);
         $xml->registerXPathNamespace('opensearch', 'http://a9.com/-/spec/opensearch/1.1/');

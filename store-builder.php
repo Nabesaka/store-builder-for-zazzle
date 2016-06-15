@@ -110,12 +110,12 @@ Class Zsb_Main {
     // Convert feed to Products (see zsb-products.php)
     $products = new Zsb_Products( $feed );
 
-    // If there were no products error
+    // If error is true, throw an error
     if($products->getError()) {
-      Zsb_Error::publicError( 'notice notice-error', 'There was a problem converting the Feed data to individual products. This is normally caused by there being no products returned.' );
+      Zsb_Error::publicError( 'notice notice-error', 'There was a problem converting the Feed data to individual products or there was a problem fetching the feed from Zazzle!' );
       return false;
     }
-
+    
     // Setup twig template system (template path, caching, debug)
     $template = new Zsb_Templates( plugin_dir_path( __FILE__ ) . 'templates', false, true );
 
@@ -139,9 +139,7 @@ Class Zsb_Main {
     array_map( 'urlencode', $atts );
 
     // Build a query string from them & add to URL
-    $url = esc_url( $url . '?' . build_query( $atts ) );
-
-    var_dump($url);
+    $url = $url . '?' . build_query( $atts );
 
     $feed = wp_remote_get($url, array(
       'timeout' => 20,
@@ -177,7 +175,7 @@ Class Zsb_Main {
     return array(
       'qs'  => $atts['keyword_filter'],
       'ps'  => $atts['products_per_page'],
-      'bg'  => $atts['img_bg'],
+      'bg'  => str_replace( '#', '', $atts['img_bg'] ), // Remove # from color. Not very neat, but quick and easy.
       'isz' => $atts['image_size'],
       'st'  => $st,
       'sp'  => $sp,

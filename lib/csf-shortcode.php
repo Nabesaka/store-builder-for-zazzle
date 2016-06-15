@@ -58,7 +58,7 @@ Class Zsb_Csf_Shortcode {
               'id'    => 'products_per_page',
               'type'  => 'number',
               'title' => 'Products Per Page',
-              'help'  => 'How many products to show per page',
+              'help'  => 'How many products to show per page.',
             ),
 
             array(
@@ -73,6 +73,94 @@ Class Zsb_Csf_Shortcode {
                 'popularity|30'   => 'Popularity (This Month)',
               ),
               'default_option' => 'Select Sorting',
+            ),
+
+            array(
+              'id'    => 'image_size',
+              'type'  => 'select',
+              'title' => 'Product Image Size',
+              'options'     => array(
+                'tiny'    => '50px X 50px',
+                'small'   => '92px X 92px',
+                'medium'  => '152px X 152px',
+                'large'   => '210px X 210px',
+                'huge'    => '328px X 328px',
+              ),
+              'default_option' => 'Select Image Size',
+            ),
+
+            array(
+              'id'    => 'link_product',
+              'type'  => 'switcher',
+              'title' => 'Link product to Zazzle Product',
+              'default' => true,
+            ),
+
+            array(
+              'id'    => 'alt_link',
+              'type'  => 'text',
+              'title' => 'Alternative Product Link',
+              'help'  => 'If present this will always override the product link.'
+            ),
+
+            array(
+              'id'    => 'img_bg',
+              'type'  => 'color_picker',
+              'title' => 'Product Image Background Color',
+              'help'  => 'Default is white unless something is selected on the options page.'
+            ),
+
+            array(
+              'id'    => 'keyword_filter',
+              'type'  => 'text',
+              'title' => 'Keyword Filter',
+              'help'  => 'Keywords to filter by. Seperate with commas.'
+            ),
+
+            array(
+              'id'    => 'department_filter',
+              'type'  => 'text',
+              'title' => 'Department Filter',
+              'help'  => 'Limits returned items to a specific deparment (product type).'
+            ),
+
+            array(
+              'id'    => 'product_line_filter',
+              'type'  => 'text',
+              'title' => 'Product Line Filter',
+              'help'  => 'Also known as a store category.'
+            ),
+
+            array(
+              'id'      => 'display_title',
+              'type'    => 'switcher',
+              'title'   => 'Display Product Title',
+              'desc'    => 'Should the product title be displayed?',
+              'default' => true
+            ),
+
+            array(
+              'id'      => 'display_author',
+              'type'    => 'switcher',
+              'title'   => 'Display By Line',
+              'desc'    => 'Should the product author/designer be displayed?',
+              'default' => true
+            ),
+
+            array(
+              'id'      => 'display_description',
+              'type'    => 'switcher',
+              'title'   => 'Display Product Description',
+              'desc'    => 'Should the product description be displayed?',
+              'default' => true
+            ),
+
+            array(
+              'id'      => 'display_price',
+              'type'    => 'switcher',
+              'title'   => 'Display Product Price',
+              'desc'    => 'Should the product price be displayed?',
+              'default' => true
             ),
 
           )
