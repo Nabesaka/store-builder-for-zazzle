@@ -59,6 +59,13 @@ class Zsb_Product {
     private $imageUrl;
 
     /**
+     * Product Large Image URL
+     *
+     * @var string
+     */
+    private $imageUrlLarge;
+
+    /**
      * Product Maturity Rating
      *
      * @var string
@@ -260,6 +267,28 @@ class Zsb_Product {
     public function setImageUrl($imageUrl)
     {
         $this->imageUrl = (string) $imageUrl;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of Product Image URL Large
+     *
+     * @return string
+     */
+    public function getImageUrlLarge()
+    {
+        return $this->imageUrlLarge;
+    }
+
+    /**
+     * Set the value of Product Image URL Large
+     *
+     * @return string
+     */
+    public function setImageUrlLarge($imageUrlLarge)
+    {
+        $this->imageUrlLarge = (string) $imageUrlLarge;
 
         return $this;
     }

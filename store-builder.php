@@ -56,6 +56,9 @@ Class Zsb_Main {
     // Do some compatibility checking
     add_action( 'admin_init', array( $this, 'checkCompat' ) );
 
+    // Output custom CSS - We can't use wp_add_inline_style() since we don't add a normal stylesheet
+    add_action( 'wp_head', array( $this, 'addCustomCss' ) );
+
     // Get the feed from Zazzle
     add_shortcode( 'store-builder', array( $this, 'buildShortcode' ) );
 
@@ -78,6 +81,13 @@ Class Zsb_Main {
       return false; // End Exec
     }
 
+  }
+
+  public function addCustomCss()
+  {
+    $customCss = cs_get_option( 'zsb_custom_css' );
+
+    echo '<style type="text/css">' . $customCss . '</style>';
   }
 
   public function buildShortcode( $atts )
@@ -115,11 +125,11 @@ Class Zsb_Main {
       Zsb_Error::publicError( 'notice notice-error', 'There was a problem converting the Feed data to individual products or there was a problem fetching the feed from Zazzle!' );
       return false;
     }
-    
+
     // Setup twig template system (template path, caching, debug)
     $template = new Zsb_Templates( plugin_dir_path( __FILE__ ) . 'templates', false, true );
 
-    return $template->twig->render( 'standard.html.twig', array( 'products' => $products ) );
+    return $template->twig->render( 'standard.html.twig', array( 'products' => $products, 'settings' => $atts ) );
 
   }
 

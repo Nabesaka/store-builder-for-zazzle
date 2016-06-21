@@ -210,6 +210,29 @@ Class Zsb_Csf_Options {
      ),
    );
 
+   // STYLING SETTINGS
+
+   $options[]    = array(
+     'name'      => 'zsb_section_styling',
+     'title'     => 'Styling Options',
+     'icon'      => 'fa fa-paint-brush',
+     'fields'    => array(
+       array(
+         'type'     => 'subheading',
+         'content'  => 'Styling Options',
+       ),
+
+       array(
+         'id'       => 'zsb_custom_css',
+         'type'     => 'textarea',
+         'title'    => 'Custom CSS',
+         'desc'     => 'Enter custom CSS rules to style the output of the plugin.',
+       ),
+
+     )
+   );
+
+
    // DISPLAY SETTINGS
 
    $options[]    = array(

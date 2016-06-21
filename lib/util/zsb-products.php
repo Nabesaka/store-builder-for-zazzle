@@ -100,6 +100,7 @@ class Zsb_Products implements IteratorAggregate {
           $product->setDescription($item->xpath('media:description')[0]);
           $product->setDescriptionHTML($item->description);
           $product->setImageUrl($item->xpath('media:thumbnail')[0]->attributes()->url);
+          $product->setImageUrlLarge($item->xpath('media:content')[0]->attributes()->url);
           $product->setRating($item->xpath('media:rating')[0]);
           $product->setKeywords($item->xpath('media:keywords')[0]);
 

@@ -41,8 +41,18 @@ class Zsb_Templates {
             'debug' => $this->debug,
         ));
 
-        if($this->debug)
-            $this->twig->addExtension(new Twig_Extension_Debug());
+        $referralFilter = new Twig_SimpleFilter('rf', array( $this, 'addReferral' ) );
+        $this->twig->addFilter( $referralFilter );
+
+        if( $this->debug )
+            $this->twig->addExtension( new Twig_Extension_Debug() );
+    }
+
+    public function addReferral( $url, $rf )
+    {
+        $query = build_query( array( 'rf' => $rf ) );
+
+        return $url . '?' . $query;
     }
 
 }
