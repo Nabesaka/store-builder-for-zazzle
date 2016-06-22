@@ -1,0 +1,33 @@
+.zsb_products {
+    display: block;
+    width: 100%;
+}
+.zsb_row {
+    margin-bottom: 20px;
+}
+.zsb_product {
+    float: left;
+    width: 33.3%;
+}
+.zsb_image {
+    display: block;
+    text-align: center;
+}
+.zsb_title {
+    text-align: center;
+}
+
+/**
+ * We can't assume a Clearfix will be available so provide one
+ */
+.zsb_cf:before,
+.zsb_cf:after {
+    content: " "; /* 1 */
+    display: table; /* 2 */
+}
+.zsb_cf:after {
+    clear: both;
+}
+.zsb_cf {
+    *zoom: 1;
+}

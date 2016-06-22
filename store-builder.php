@@ -56,8 +56,8 @@ Class Zsb_Main {
     // Do some compatibility checking
     add_action( 'admin_init', array( $this, 'checkCompat' ) );
 
-    // Output custom CSS - We can't use wp_add_inline_style() since we don't add a normal stylesheet
-    add_action( 'wp_head', array( $this, 'addCustomCss' ) );
+    // Output custom CSS
+    add_action( 'wp_enqueue_scripts', array( $this, 'enqueueCss' ) );
 
     // Get the feed from Zazzle
     add_shortcode( 'store-builder', array( $this, 'buildShortcode' ) );
@@ -83,11 +83,14 @@ Class Zsb_Main {
 
   }
 
-  public function addCustomCss()
+  public function enqueueCss()
   {
+
+    wp_enqueue_style( 'zsb_css', plugin_dir_url( __FILE__ ) . 'css/store-builder.css', array(), '1.0' );
+
     $customCss = cs_get_option( 'zsb_custom_css' );
 
-    echo '<style type="text/css">' . $customCss . '</style>';
+    wp_add_inline_style( 'zsb_css', $customCss );
   }
 
   public function buildShortcode( $atts )
