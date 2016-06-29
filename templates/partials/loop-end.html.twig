@@ -1,0 +1,8 @@
+{% if (loop.index % 3) == 0 and loop.last != true %}
+    </div>
+    <div class="zsb_row zsb_cf">
+{% endif %}
+
+{% if loop.last %}
+    </div>
+{% endif %}

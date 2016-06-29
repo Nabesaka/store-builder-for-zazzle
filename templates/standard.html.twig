@@ -1,29 +1,26 @@
 <div class="zsb_products zsb_cf">
     {% for product in products %}
 
-        {% if loop.first %}
-            <div class="zsb_row zsb_cf">
-        {% endif %}
+        {{ include('partials/loop-start.html.twig', ignore_missing = true) }}
 
-                <div class="zsb_product">
-                    <div class="zsb_image">
-                        {% if product.getImageUrl %}
-                            <img src="{{ product.getImageUrl }}" />
-                        {% endif %}
-                    </div>
-                    <div class="zsb_title">
-                        <a href="{{ product.getLink|rf(settings.referral_id) }}">{{ product.getTitle[:45]|raw }}&hellip;</a>
-                    </div>
+            <div class="zsb_product">
+                <div class="zsb_image">
+                    {% if settings.link_product %}
+                        <a href="{{ product.getLink|rf(settings.referral_id) }}"><img src="{{ product.getImageUrl }}" /></a>
+                    {% endif %}
                 </div>
-
-        {% if (loop.index % 3) == 0 and loop.last != true %}
+                <div class="zsb_title">
+                    {% if settings.link_product %}
+                        <a href="{{ product.getLink|rf(settings.referral_id) }}">{{ product.getTitle[:45]|raw }}&hellip;</a>
+                    {% else %}
+                        {% if settings.show_product_title %}
+                            {{ product.getTitle[:45]|raw }}&hellip;
+                        {% endif %}
+                    {% endif %}
+                </div>
             </div>
-            <div class="zsb_row zsb_cf">
-        {% endif %}
 
-        {% if loop.last %}
-            </div>
-        {% endif %}
+        {{ include('partials/loop-end.html.twig', ignore_missing = true) }}
 
     {% endfor %}
 </div>
